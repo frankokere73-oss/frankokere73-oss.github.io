@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Caleb Okere, data analyst in Lagos, Nigeria. SQL, Python and Power BI projects, experience and contact.">
+<title>Caleb Okere Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: single long page. Sticky slim nav, hero with a self-drawing revenue line and a sun,
+   then About, Skills, Experience (timeline), Projects (3 cards), Contact. */
+:root {
+  --bg: #F6F8FB;
+  --surface: #FFFFFF;
+  --navy: #0B1F3A;
+  --fg: #0B1F3A;
+  --muted: #55657D;
+  --line: #E1E7EF;
+  --accent: #0A8577;
+  --teal: #14B8A6;
+  --on-dark: #FFFFFF;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+  overflow-x: hidden;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.mono { font-family: var(--font-mono); }
+.label { font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+
+/* progress bar + nav */
+.progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: var(--teal); z-index: 30; }
+nav.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding-inline: max(16px, env(safe-area-inset-left, 0px));
+  background: rgba(246,248,251,.9);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+nav.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; }
+.brand { font-family: var(--font-display); font-weight: 800; text-decoration: none; letter-spacing: -.01em; white-space: nowrap; }
+.links { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+.links::-webkit-scrollbar { display: none; }
+.links a { text-decoration: none; font-size: 14px; padding: 6px 12px; border-radius: 999px; color: var(--muted); white-space: nowrap; transition: background .25s, color .25s; }
+.links a:hover { color: var(--fg); background: var(--surface); }
+.links a.on { color: var(--on-dark); background: var(--navy); }
+
+/* hero */
+.hero { position: relative; padding-block: clamp(48px, 9vw, 104px) clamp(40px, 7vw, 72px); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 40px; align-items: center; }
+.hero h1 { font-size: clamp(2.5rem, 7.2vw, 5rem); font-weight: 800; letter-spacing: -.03em; margin-block: 14px 18px; }
+.hero h1 span { color: var(--accent); }
+.hero .lede { color: var(--muted); font-size: clamp(1rem, 2vw, 1.15rem); max-width: 52ch; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; border: 1.5px solid var(--navy); transition: transform .2s, background .2s, color .2s; cursor: pointer; font-family: var(--font-body); }
+.btn.primary { background: var(--navy); color: var(--on-dark); }
+.btn.ghost { background: transparent; color: var(--navy); }
+.btn:hover { transform: translateY(-2px); }
+.btn.ghost:hover { background: var(--navy); color: var(--on-dark); }
+.btn svg { width: 18px; height: 18px; }
+.badge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
+.badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse 2s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--teal) 60%, transparent); } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+.chart-card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px 20px 14px; overflow: hidden; }
+.chart-card .cap { display: flex; justify-content: space-between; gap: 8px; font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); letter-spacing: .04em; }
+.chart-card svg { width: 100%; height: auto; display: block; margin-top: 8px; overflow: visible; }
+.sun { transform-origin: 50% 50%; animation: spin 40s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.draw { stroke-dasharray: 700; stroke-dashoffset: 700; animation: draw 2.4s .4s cubic-bezier(.3,.7,.2,1) forwards; }
+.area { opacity: 0; animation: fade 1s 2.2s forwards; }
+.dot { opacity: 0; animation: fade .5s 2.4s forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fade { to { opacity: 1; } }
+.floaty { animation: floaty 6s ease-in-out infinite; }
+@keyframes floaty { 50% { transform: translateY(-6px); } }
+
+/* sections */
+section { padding-block: clamp(48px, 8vw, 88px); border-top: 1px solid var(--line); }
+.sec-head { display: grid; gap: 10px; margin-bottom: clamp(28px, 4vw, 44px); }
+.sec-head h2 { font-size: clamp(1.9rem, 4.6vw, 3rem); font-weight: 700; letter-spacing: -.02em; }
+
+/* about */
+.about { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: clamp(24px, 5vw, 64px); align-items: start; }
+.about p { max-width: 62ch; color: var(--muted); font-size: 1.05rem; }
+.about p + p { margin-top: 16px; }
+.about p strong { color: var(--fg); font-weight: 600; }
+.facts { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); overflow: hidden; }
+.facts div { display: grid; gap: 2px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.facts div:last-child { border-bottom: 0; }
+.facts dt { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 0; font-weight: 500; overflow-wrap: anywhere; }
+.facts { margin: 0; }
+
+/* skills */
+.skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; }
+.skill { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; transition: transform .3s, border-color .3s; min-width: 0; }
+.skill:hover { transform: translateY(-4px); border-color: var(--accent); }
+.skill h3 { font-size: 1.15rem; margin-bottom: 4px; }
+.skill .sub { font-size: 13.5px; color: var(--muted); margin-bottom: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--font-mono); font-size: 12.5px; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); transition: background .2s, color .2s, border-color .2s; }
+.skill:hover .chip { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.chip:hover { background: var(--navy); color: var(--on-dark); }
+.chip.learning { border-style: dashed; color: var(--muted); }
+
+/* experience */
+.job { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: clamp(20px, 4vw, 48px); }
+.job .when { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.job .when b { display: block; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
+.job h3 { font-size: 1.5rem; }
+.job .co { color: var(--muted); margin: 4px 0 18px; }
+.steps { list-style: none; margin: 0; padding: 0 0 0 26px; position: relative; display: grid; gap: 14px; }
+.steps::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+.steps::after { content: ""; position: absolute; left: 5px; top: 8px; width: 2px; height: var(--grow, 0%); background: var(--teal); transition: height 1.4s cubic-bezier(.3,.7,.2,1); max-height: calc(100% - 16px); }
+.steps li { position: relative; }
+.steps li::before { content: ""; position: absolute; left: -26px; top: 8px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--teal); transition: background .3s; }
+.steps li:hover::before { background: var(--teal); }
+
+/* projects */
+.proj-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.proj { display: flex; flex-direction: column; gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 24px; transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; min-width: 0; }
+.proj:hover { transform: translateY(-4px); border-color: var(--teal); box-shadow: 0 6px 18px -10px rgba(11,31,58,.18); }
+.proj { position: relative; cursor: pointer; }
+.proj h3 a { text-decoration: none; }
+.proj h3 a::after { content: ""; position: absolute; inset: 0; border-radius: 16px; }
+.proj:focus-within { border-color: var(--accent); }
+.proj .go { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+.proj .go svg { width: 16px; height: 16px; transition: transform .25s; }
+.proj:hover .go svg { transform: translate(4px, -4px); }
+.proj:hover h3 a { color: var(--accent); }
+.proj .stack { font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: .02em; }
+.proj h3 { font-size: 1.3rem; }
+.big { display: flex; align-items: baseline; gap: 10px; padding-block: 12px; border-block: 1px dashed var(--line); }
+.big .n { font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800; color: var(--accent); line-height: 1; font-variant-numeric: tabular-nums; }
+.big .t { font-size: 13.5px; color: var(--muted); line-height: 1.4; }
+.proj ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--muted); font-size: 15px; }
+.proj ul li::marker { color: var(--accent); }
+
+/* contact */
+.contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 56px); }
+.contact h2 { font-size: clamp(2rem, 5vw, 3.4rem); }
+.contact .lead { color: var(--muted); max-width: 44ch; margin-top: 14px; }
+.addr { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 22px; }
+.addr code { font-family: var(--font-mono); font-size: 15px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); user-select: all; overflow-wrap: anywhere; }
+.copy { font-family: var(--font-mono); font-size: 13px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; transition: border-color .2s; }
+.copy:hover { border-color: var(--accent); }
+.rows { display: grid; gap: 10px; margin-top: 24px; }
+.rows a, .rows span.r { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding .25s, color .25s; flex-wrap: wrap; }
+.rows a:hover { padding-left: 10px; color: var(--accent); }
+.rows .k { font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+form.mail { display: grid; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: clamp(18px, 3vw, 28px); align-content: start; }
+form.mail label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 500; }
+form.mail input, form.mail textarea { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; width: 100%; transition: border-color .2s, box-shadow .2s; }
+form.mail input:focus, form.mail textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+form.mail textarea { min-height: 120px; resize: vertical; }
+form.mail .note { font-size: 13px; color: var(--muted); }
+footer { padding-block: 28px calc(28px + 8px); border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13.5px; color: var(--muted); }
+
+/* reveal on scroll */
+.js .rv { opacity: 0; transform: translateY(32px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0ms); }
+.js .rv.l { transform: translateX(-36px); }
+.js .rv.r { transform: translateX(36px); }
+.js .rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 860px) {
+  .hero, .about, .contact { grid-template-columns: minmax(0, 1fr); }
+  .proj-grid { grid-template-columns: minmax(0, 1fr); }
+  .job { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0s !important; transition-duration: .001ms !important; }
+  .draw { stroke-dashoffset: 0; } .area, .dot { opacity: 1; }
+  .js .rv { opacity: 1; transform: none; }
+}
+</style>
+
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<nav class="top" aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="#top">Caleb Okere</a>
+    <div class="links" id="links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap" id="top">
+  <header class="hero">
+    <div>
+      <div class="badge rv"><i></i> Lagos, Nigeria &middot; Data Analyst</div>
+      <h1 class="rv" style="--d:80ms">Raw data in, <span>clear decisions</span> out.</h1>
+      <p class="lede rv" style="--d:160ms">I am Caleb Okere, a data analyst who cleans messy datasets, queries them with SQL and Python, and turns them into dashboards that leadership can act on.</p>
+      <div class="cta rv" style="--d:240ms">
+        <a class="btn primary" href="Okere-Caleb-CV.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+          Download CV
+        </a>
+        <a class="btn ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    <div class="chart-card rv r" style="--d:200ms" aria-hidden="true">
+      <div class="cap"><span>MONTHLY REVENUE</span><span>Illustration</span></div>
+      <svg viewBox="0 0 400 250" role="img" aria-label="Illustration of a rising revenue line under a sun">
+        <g stroke="var(--line)" stroke-width="1">
+          <line x1="10" y1="210" x2="390" y2="210"/><line x1="10" y1="160" x2="390" y2="160"/>
+          <line x1="10" y1="110" x2="390" y2="110"/><line x1="10" y1="60" x2="390" y2="60"/>
+        </g>
+        <g class="floaty">
+          <g transform="translate(318 62)">
+            <g class="sun">
+              <g stroke="var(--teal)" stroke-width="3" stroke-linecap="round">
+                <line x1="0" y1="-34" x2="0" y2="-24"/><line x1="0" y1="34" x2="0" y2="24"/>
+                <line x1="-34" y1="0" x2="-24" y2="0"/><line x1="34" y1="0" x2="24" y2="0"/>
+                <line x1="-24" y1="-24" x2="-17" y2="-17"/><line x1="24" y1="24" x2="17" y2="17"/>
+                <line x1="-24" y1="24" x2="-17" y2="17"/><line x1="24" y1="-24" x2="17" y2="-17"/>
+              </g>
+            </g>
+            <circle r="14" fill="var(--teal)"/>
+          </g>
+        </g>
+        <path class="area" d="M10 196 L70 178 L130 184 L190 150 L250 138 L310 112 L390 92 L390 210 L10 210 Z" fill="var(--accent)" fill-opacity=".14"/>
+        <path class="draw" d="M10 196 L70 178 L130 184 L190 150 L250 138 L310 112 L390 92" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" pathLength="700"/>
+        <circle class="dot" cx="390" cy="92" r="6" fill="var(--teal)" stroke="var(--surface)" stroke-width="3"/>
+      </svg>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="sec-head rv"><span class="label">About me</span><h2>Turning sales and operations records into something leaders can read.</h2></div>
+    <div class="about">
+      <div>
+        <p class="rv"><strong>Results-driven data analyst</strong> with hands-on project and workplace experience in data cleaning, SQL querying, statistical analysis and dashboard development, using Python, SQL, Power BI and Excel.</p>
+        <p class="rv" style="--d:100ms">I am good at transforming raw datasets into <strong>actionable business insights</strong>. Today I do this at Ahavah Energy Solutions, a solar company, where I organise sales and operations data, report on revenue trends and help the team plan customer maintenance ahead of time.</p>
+        <p class="rv" style="--d:200ms">I am looking to bring these analytical skills to a data-driven team in an analyst role.</p>
+      </div>
+      <dl class="facts rv r">
+        <div><dt>Role</dt><dd>Data Analyst</dd></div>
+        <div><dt>Currently</dt><dd>Ahavah Energy Solutions</dd></div>
+        <div><dt>Based in</dt><dd>Lagos, Nigeria</dd></div>
+        <div><dt>Education</dt><dd>B.Sc. Industrial Physics, Nnamdi Azikiwe University, Awka</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head rv"><span class="label">Skills</span><h2>The toolkit behind the analysis.</h2></div>
+    <div class="skill-grid">
+      <article class="skill rv">
+        <h3>Languages</h3><p class="sub">Querying, cleaning and modelling data</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">Matplotlib</span><span class="chip">Seaborn</span><span class="chip">SQL</span><span class="chip">Joins</span><span class="chip">Aggregations</span><span class="chip">CTEs</span><span class="chip">Subqueries</span></div>
+      </article>
+      <article class="skill rv" style="--d:100ms">
+        <h3>BI &amp; Visualization</h3><p class="sub">Dashboards and reports people actually open</p>
+        <div class="chips"><span class="chip">Power BI</span><span class="chip">Tableau</span><span class="chip">Excel</span><span class="chip">Pivot Tables</span><span class="chip">VLOOKUP</span><span class="chip">Advanced Charts</span></div>
+      </article>
+      <article class="skill rv" style="--d:200ms">
+        <h3>Analysis</h3><p class="sub">From first look to a recommendation</p>
+        <div class="chips"><span class="chip">Exploratory Data Analysis</span><span class="chip">Data Cleaning &amp; Preprocessing</span><span class="chip">RFM Analysis</span><span class="chip">Predictive Modeling</span></div>
+      </article>
+      <article class="skill rv" style="--d:300ms">
+        <h3>AI Automation</h3><p class="sub">Currently learning</p>
+        <div class="chips"><span class="chip learning">n8n</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="sec-head rv"><span class="label">Work experience</span><h2>Where I apply it.</h2></div>
+    <div class="job">
+      <div class="when rv"><b>January 2026 &ndash; Present</b>Lagos, Nigeria</div>
+      <div>
+        <h3 class="rv">Data Analyst</h3>
+        <p class="co rv">Ahavah Energy Solutions</p>
+        <ul class="steps" id="steps">
+          <li class="rv">Organized and structured company sales and operations data, improving accuracy and accessibility of monthly business reporting.</li>
+          <li class="rv" style="--d:100ms">Tracked and reported monthly sales performance, giving leadership clear visibility into revenue trends over time.</li>
+          <li class="rv" style="--d:200ms">Analyzed sales and installation records by location to map where products sold and where solar panels and solar systems were installed, surfacing regional performance trends.</li>
+          <li class="rv" style="--d:300ms">Supported proactive customer service by identifying upcoming maintenance windows in advance, reducing reliance on reactive scheduling.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="sec-head rv"><span class="label">Projects</span><h2>Three analyses, three questions answered.</h2></div>
+    <div class="proj-grid">
+      <article class="proj rv">
+        <span class="stack">SQL · Python · Pandas</span>
+        <h3><a href="https://github.com/frankokere73-oss/Customer_Churn_Prediction" target="_blank" rel="noopener" data-project="churn">Customer Churn Prediction &amp; Analysis</a></h3>
+        <div class="big"><span class="n" data-count="26" data-prefix="~" data-suffix="%">~26%</span><span class="t">of customers flagged as high churn risk</span></div>
+        <ul>
+          <li>Analyzed a 7,000+ record IBM Telco-style dataset to find the drivers of churn using SQL aggregations and CTEs.</li>
+          <li>Month-to-month contract customers churned at 3x the rate of annual contract holders.</li>
+          <li>Recommendations projected to reduce churn by up to 15% if implemented.</li>
+        </ul>
+        <span class="go">View on GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+      </article>
+      <article class="proj rv" style="--d:120ms">
+        <span class="stack">Python · Pandas · Matplotlib · Seaborn</span>
+        <h3><a href="https://github.com/frankokere73-oss/Diabetes_Project" target="_blank" rel="noopener" data-project="diabetes">Diabetes Patient Data Analysis</a></h3>
+        <div class="big"><span class="n" data-count="40" data-prefix="40" data-suffix="%+">40%+</span><span class="t">of positive diagnoses: ages 45&ndash;60 with BMI above 30</span></div>
+        <ul>
+          <li>Analyzed a 768-record patient dataset to find the age groups and BMI bands with the highest diabetes prevalence.</li>
+          <li>Created 8+ visualizations (heatmaps, box plots, histograms) linking clinical features to outcomes.</li>
+        </ul>
+        <span class="go">View on GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+      </article>
+      <article class="proj rv" style="--d:240ms">
+        <span class="stack">Power BI · Excel</span>
+        <h3><a href="https://github.com/frankokere73-oss/Sales" target="_blank" rel="noopener" data-project="sales">Sales Performance Dashboard</a></h3>
+        <div class="big"><span class="n" data-count="62" data-suffix="%">62%</span><span class="t">of total revenue from the top product lines</span></div>
+        <ul>
+          <li>Built an interactive Power BI dashboard on 12 months of sales across 5 product categories and 3 regions.</li>
+          <li>Surfaced underperforming SKUs for review.</li>
+          <li>Found a 23% Q4 revenue spike tied to seasonal demand, used to inform inventory planning.</li>
+        </ul>
+        <span class="go">View on GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <div>
+        <span class="label rv">Contact</span>
+        <h2 class="rv" style="--d:80ms; margin-top:10px">Let's work on your data.</h2>
+        <p class="lead rv" style="--d:160ms">Open to analyst roles and data projects. Send a message and I will reply by email.</p>
+        <div class="addr rv" style="--d:220ms">
+          <code id="addr">Frankokere73@gmail.com</code>
+          <button class="copy" id="copy" type="button">Copy</button>
+        </div>
+        <div class="rows rv" style="--d:280ms">
+          <a href="https://github.com/frankokere73-oss" target="_blank" rel="noopener"><span class="k">GitHub</span><span>github.com/frankokere73-oss</span></a>
+          <span class="r"><span class="k">Phone</span><span>08109407337</span></span>
+          <span class="r"><span class="k">Location</span><span>Lagos, Nigeria</span></span>
+          <a href="Okere-Caleb-CV.pdf" target="_blank" rel="noopener"><span class="k">Curriculum vitae</span><span>Download CV (PDF)</span></a>
+        </div>
+      </div>
+      <form class="mail rv r" id="mailform" autocomplete="off">
+        <label for="fname">Your name<input id="fname" name="name" type="text" placeholder="Jane Adeyemi"></label>
+        <label for="fmsg">Message<textarea id="fmsg" name="message" placeholder="Hi Caleb, I would like to talk about..."></textarea></label>
+        <a class="btn primary" id="mailto" href="mailto:Frankokere73@gmail.com?subject=Hello%20Caleb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          Email Caleb
+        </a>
+        <p class="note">This opens your email app with the message filled in. If nothing opens, copy the address on the left and write to me directly.</p>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <span>&copy; 2026 Caleb Okere</span>
+    <span>Data Analyst &middot; Lagos, Nigeria</span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js');
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var EMAIL = 'Frankokere73@gmail.com';
+
+  // reveal on scroll, both directions
+  var rv = document.querySelectorAll('.rv');
+  var steps = document.getElementById('steps');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        if (e.target.querySelector('[data-count]')) countUp(e.target);
+      } else if (e.boundingClientRect.top > 0) {
+        e.target.classList.remove('in');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  rv.forEach(function (el) { io.observe(el); });
+
+  // count-up for project numbers
+  function countUp(card) {
+    var n = card.querySelector('[data-count]');
+    if (!n || n.dataset.done === '1') return;
+    n.dataset.done = '1';
+    var end = parseFloat(n.dataset.count);
+    var pre = n.dataset.prefix || '', suf = n.dataset.suffix || '';
+    if (n.dataset.count === '40') pre = '';
+    if (reduce) return;
+    var t0 = null, dur = 1400;
+    function tick(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var v = Math.round(end * (1 - Math.pow(1 - p, 3)));
+      n.textContent = pre + v + suf;
+      if (p < 1) requestAnimationFrame(tick);
+      else n.textContent = (n.dataset.count === '40' ? '40' : pre + end) + suf;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // scroll progress, nav highlight, timeline line growth
+  var bar = document.getElementById('progress');
+  var linkEls = Array.prototype.slice.call(document.querySelectorAll('#links a'));
+  var secs = linkEls.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  var ticking = false;
+  function onScroll() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var p = h > 0 ? Math.min(window.scrollY / h, 1) : 0;
+    bar.style.transform = 'scaleX(' + p + ')';
+    var cur = -1, y = window.innerHeight * 0.35;
+    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top < y) cur = i; });
+    linkEls.forEach(function (a, i) { a.classList.toggle('on', i === cur); });
+    if (steps) {
+      var r = steps.getBoundingClientRect();
+      var prog = (window.innerHeight * 0.75 - r.top) / r.height;
+      steps.style.setProperty('--grow', Math.max(0, Math.min(prog, 1)) * 100 + '%');
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  // keep active nav chip in view on small screens
+  var linksBox = document.getElementById('links');
+  var obs = new MutationObserver(function () {
+    var on = linksBox.querySelector('.on');
+    if (on && linksBox.scrollWidth > linksBox.clientWidth) {
+      linksBox.scrollTo({ left: on.offsetLeft - 16, behavior: reduce ? 'auto' : 'smooth' });
+    }
+  });
+  obs.observe(linksBox, { subtree: true, attributes: true, attributeFilter: ['class'] });
+
+  // contact: live mailto link
+  var nameEl = document.getElementById('fname');
+  var msgEl = document.getElementById('fmsg');
+  var mailto = document.getElementById('mailto');
+  function buildMailto() {
+    var n = nameEl.value.trim();
+    var m = msgEl.value.trim();
+    var subject = n ? 'Hello Caleb, this is ' + n : 'Hello Caleb';
+    var body = m ? m + (n ? '\n\n' + n : '') : '';
+    mailto.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) + (body ? '&body=' + encodeURIComponent(body) : '');
+  }
+  nameEl.addEventListener('input', buildMailto);
+  msgEl.addEventListener('input', buildMailto);
+  document.getElementById('mailform').addEventListener('submit', function (e) { e.preventDefault(); });
+
+  // copy address
+  var copyBtn = document.getElementById('copy');
+  copyBtn.addEventListener('click', function () {
+    function done(ok) {
+      copyBtn.textContent = ok ? 'Copied' : 'Press Ctrl+C';
+      setTimeout(function () { copyBtn.textContent = 'Copy'; }, 1800);
+    }
+    function fallback() {
+      var r = document.createRange();
+      r.selectNodeContents(document.getElementById('addr'));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      done(false);
+    }
+    try {
+      navigator.clipboard.writeText(EMAIL).then(function () { done(true); }, fallback);
+    } catch (err) { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
